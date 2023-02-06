@@ -174,8 +174,6 @@ int main(void) {
   IdleState state = {0};
   FILE *f = NULL;
 
-  //putchar('\n');
-
   f = fopen(savepath, "rb");
   if (!f) {
     // No save exists, create one.
