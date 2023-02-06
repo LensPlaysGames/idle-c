@@ -31,7 +31,12 @@ void idle_fprint(IdleState s, FILE *f) {
 }
 
 size_t idle_pps_cost(IdleState s) {
-  return s.points_per_second * 120;
+  // At first, the cost to upgrade pps should be slowish, and get faster quickly.
+  // At some point, it should begin getting slower again (diminishing returns).
+  // At some point after that, it should be ridiculously expensive.
+  // TODO: This is not exactly ideal, but it's simple enoough and "works".
+  // 120x^1.5 + 9;
+  return s.points_per_second * (s.points_per_second * 0.5) * 60 + 9;
 }
 
 void idle_update(IdleState *s) {
@@ -52,7 +57,7 @@ typedef enum InputResult {
 } InputResult;
 
 InputResult handle_user_input(IdleState *state, char c) {
-  const size_t cost_to_upgrade_pps = state->points_per_second * 120;
+  const size_t cost_to_upgrade_pps = idle_pps_cost(*state);
   switch (c) {
   default: break;
 
