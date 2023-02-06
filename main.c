@@ -42,12 +42,14 @@ size_t idle_pps_cost(IdleState s) {
   // At first, the cost to upgrade pps should be slowish, and get faster quickly.
   // At some point, it should begin getting slower again (diminishing returns).
   // At some point after that, it should be ridiculously expensive.
-  // TODO: This is not exactly ideal, but it's simple enoough and "works".
-  // 120x^1.5 + 9;
+
+  // This is not exactly ideal, but it's simple enough and "works".
+  // 120(1.5x) + 9 // s.points_per_second * (size_t)(s.points_per_second * 0.5) * 60 + 9;
   return s.points_per_second * (size_t)(s.points_per_second * 0.5) * 60 + 9;
 }
 
 size_t idle_manual_cost(IdleState s) {
+  // Idek honestly
   return s.manual_scale * (s.points_per_second * 0.5) * 120 + 10;
 }
 
